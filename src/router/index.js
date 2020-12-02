@@ -10,20 +10,20 @@ const routes = [
     component: () => import('../views/Home.vue')
   },
   {
-    path: '/user-goals',
-    name: 'userGoals',
-    component: () => import('../views/UserGoals.vue')
+    path: '/user',
+    name: 'user',
+    component: () => import('../views/User.vue')
   },
-  {
-    path: '/user-achievements',
-    name: 'userAchievements',
-    component: () => import('../views/UserAchievements.vue')
-  },
-  {
-    path: '/user-statistics',
-    name: 'userStatistics',
-    component: () => import('../views/UserStatistics.vue'),
-  }
+  // {
+  //   path: '/user-achievements',
+  //   name: 'userAchievements',
+  //   component: () => import('../views/UserAchievements.vue')
+  // },
+  // {
+  //   path: '/user-statistics',
+  //   name: 'userStatistics',
+  //   component: () => import('../views/UserStatistics.vue'),
+  // }
   // {
   //   path: '/about',
   //   name: 'About',
