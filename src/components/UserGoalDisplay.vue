@@ -88,7 +88,9 @@ export default {
   },
   props: ["currentUserId"],
 
-  created() {
+
+
+  mounted() {
     const db = firebase.app().firestore();
 
     db.collection("users")

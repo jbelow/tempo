@@ -67,23 +67,25 @@ export default {
   }),
 
   //TODO: is this really needed? I could just use currentUser.displayName if i ever want to show it.
-  created() {
+//   created() {
+
     //   console.log(this.currentUser.uid)
-  },
+//   },
 
   mounted() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.currentUser = user;
+        this.currentUserId = firebase.auth().currentUser.uid;
         this.userPfp = firebase.auth().currentUser.photoURL;
         this.userName = firebase.auth().currentUser.displayName;
-        this.currentUserId = firebase.auth().currentUser.uid;
         // a user has just logged in, so we need to get his/her document
         // from our users collection
         this.getUserDocument(user.uid);
       } else {
         this.currentUser = null;
         this.userRole = null;
+        this.$router.push("/")
       }
     });
   },
@@ -91,7 +93,7 @@ export default {
   methods: {
     //checking if the user is made or not
     getUserDocument(userId) {
-      // console.log("GETTING USER DOCUMENT...", userId);
+      console.log("GETTING USER DOCUMENT...", userId);
       const db = firebase.app().firestore();
       db.collection("users")
         .doc(userId)
