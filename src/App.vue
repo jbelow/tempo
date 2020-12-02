@@ -1,11 +1,10 @@
 <template>
   <v-app>
-    <router-view />
+    <router-view v-bind:currentUser="currentUser"/>
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/user-goals">user</router-link>
     </div>
-    <div>Testing: {{currentUser.uid}}</div>
   </v-app>
 </template>
 
@@ -15,7 +14,7 @@ export default {
   name: "App",
   data() {
     return {
-      currentUser: {},
+      currentUser: null,
       userRole: null,
     };
   },
