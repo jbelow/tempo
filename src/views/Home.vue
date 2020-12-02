@@ -1,41 +1,30 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar app color="white" flat>
-      <v-tabs centered class="ml-n9" color="grey darken-1">
-        <v-tab v-for="link in links" :key="link">
-          {{ link }}
-        </v-tab>
-      </v-tabs>
-      <!-- <div id="firebaseui-auth-container"></div> -->
-      <!-- login goes here -->
-      <button @click="googleLogin">Sign In With GMail Account</button>
-    </v-app-bar>
-
-    <v-main>
-      <v-container>
-        <v-sheet min-height="70vh" class="grey lighten-3">
-          <div>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita
-            laboriosam temporibus, voluptate suscipit facilis sint excepturi
-            corrupti quaerat cumque voluptatibus nostrum eos harum iste!
-            Reiciendis odit quia quidem suscipit impedit!
-          </div>
-        </v-sheet>
+    <v-main class="blue lighten-1">
+      <v-container fill-height>
+        <v-row >
+          <v-col cols="12" sm="6" md="8">
+            <h1 class="text-md-center">Keep track of how your goals with time.</h1>
+            <p class="text-md-center">Tempo is a great tool to keep track of the time that you are putting into your goals and show you how far you've come!</p>
+          </v-col>
+          <v-col cols="6" md="4">
+            <v-btn class="md-center" elevation="4" rounded x-large @click="googleLogin">Sign In With GMail Account</v-btn>
+          </v-col>
+        </v-row>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
+
+
 <script>
 import firebase from "firebase";
 
 export default {
-  data: () => ({
-    links: ["Dashboard", "Messages", "Profile", "Updates"],
-  }),
+  data: () => ({}),
 
   methods: {
-
     googleLogin() {
       const provider = new firebase.auth.GoogleAuthProvider();
       firebase
@@ -46,7 +35,6 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-
   },
 };
 </script>

@@ -35,9 +35,9 @@
 
     <v-main>
       <v-container class="py-8 px-6" fluid>
-        <!-- <h1>Your Goals:</h1> -->
-        <!-- <UserGoalCreate v-bind:currentUserId="currentUserId" />
-        <UserGoalDisplay v-bind:currentUserId="currentUserId" /> -->
+        <h1>Your Goals:</h1>
+        <UserGoalCreate v-bind:currentUserId="currentUserId" />
+        <UserGoalDisplay v-bind:currentUserId="currentUserId" />
       </v-container>
     </v-main>
   </v-app>
@@ -45,13 +45,13 @@
 
 <script>
 import firebase from "firebase";
-// import UserGoalDisplay from "../components/UserGoalDisplay";
-// import UserGoalCreate from "../components/UserGoalCreate";
+import UserGoalDisplay from "../components/UserGoalDisplay";
+import UserGoalCreate from "../components/UserGoalCreate";
 
 export default {
   components: {
-    // UserGoalDisplay,
-    // UserGoalCreate,
+    UserGoalDisplay,
+    UserGoalCreate,
   },
   props: ["currentUserId"],
 
@@ -64,14 +64,20 @@ export default {
     ],
     //TODO: help: why is it that I need to put this here but not everyting has to go here like now goal info isn't needed here?
     currentUser: null,
-    userLevel: null,
-    userPfp: null,
-    userName: null,
+    userLevel: "",
+    userPfp: "",
+    userName: "",
   }),
 
   mounted() {
-    this.userPfp = firebase.auth().currentUser.photoURL;
-    this.userName = firebase.auth().currentUser.displayName;
+    // let currentUser = firebase.auth().currentUser;
+    if(firebase.auth().currentUser){
+      this.userPfp = firebase.auth().currentUser.photoURL;
+      this.userName = firebase.auth().currentUser.displayName;
+    } else {
+      console.log("The user isn't logged in")
+    }
+
     // this.currentUserId = firebase.auth().currentUser.uid;
     console.log(this.userName);
 
