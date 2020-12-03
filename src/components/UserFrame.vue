@@ -12,7 +12,7 @@
       app
       disable-resize-watcher
     >
-      <v-sheet class="pa-9 light-blue darken-3 white--text">
+      <v-sheet class="pa-9 light-blue darken-2 white--text">
         <v-avatar class="mb-4" size="64"><img v-bind:src="userPfp" /></v-avatar>
         <div>{{ userName }}</div>
         <div>Level: {{ userLevel }}</div>
