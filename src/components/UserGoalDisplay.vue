@@ -70,7 +70,9 @@
           <!--  options/menu end-->
         </v-card-title>
 
-        <v-card-subtitle>{{ g.details }} - goal time: {{g.minutes}}</v-card-subtitle>
+        <v-card-subtitle
+          >{{ g.details }} - goal time: {{ g.minutes }}</v-card-subtitle
+        >
       </v-card>
     </div>
   </div>
@@ -86,28 +88,29 @@ export default {
       dialog: false,
     };
   },
-  props: ["currentUserId"],
-
-
 
   mounted() {
-    const db = firebase.app().firestore();
-
-    db.collection("users")
-      .doc(this.currentUserId)
-      .collection("goals")
-      .onSnapshot((snapshotChange) => {
-        this.goals = [];
-        snapshotChange.forEach((doc) => {
-          const goal = {};
-          goal.id = doc.id;
-          goal.title = doc.data().goalTitle;
-          goal.details = doc.data().goalDetails;
-          goal.minutes = doc.data().goalMinutes;
-          // console.log(goal);
-          this.goals.push(goal);
-        });
-      });
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.currentUserId = firebase.auth().currentUser.uid;
+        const db = firebase.app().firestore();
+        db.collection("users")
+          .doc(this.currentUserId)
+          .collection("goals")
+          .onSnapshot((snapshotChange) => {
+            this.goals = [];
+            snapshotChange.forEach((doc) => {
+              const goal = {};
+              goal.id = doc.id;
+              goal.title = doc.data().goalTitle;
+              goal.details = doc.data().goalDetails;
+              goal.minutes = doc.data().goalMinutes;
+              // console.log(goal);
+              this.goals.push(goal);
+            });
+          });
+      }
+    });
   },
 
   methods: {

@@ -1,9 +1,9 @@
 <template>
-  <v-app id="inspire">
+  <div>
     <v-app-bar app>
       <v-toolbar-title>Hello</v-toolbar-title>
       <v-spacer></v-spacer>
-      <button @click="signOut">Sign out</button>
+      <button @click="logout">Sign out</button>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -12,10 +12,11 @@
       app
       disable-resize-watcher
     >
-      <v-sheet class="pa-9 light-blue darken-3">
+      <v-sheet class="pa-9 light-blue darken-3 white--text">
         <v-avatar class="mb-4" size="64"><img v-bind:src="userPfp" /></v-avatar>
         <div>{{ userName }}</div>
         <div>Level: {{ userLevel }}</div>
+        <div>Minutes logged: {{ userTotalMinutes }}</div>
       </v-sheet>
 
       <v-divider></v-divider>
@@ -32,28 +33,16 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-
-    <v-main>
-      <v-container class="py-8 px-6" fluid>
-        <UserGoals v-bind:currentUserId="currentUserId" />
-      </v-container>
-    </v-main>
-  </v-app>
+  </div>
 </template>
 
 <script>
 import firebase from "firebase";
 import "firebase/auth";
-import UserGoals from "../views/UserGoals";
-import UserAchievements from "../views/UserAchievements";
-import UserStatistics from "../views/UserStatistics";
+
 
 export default {
-  components: {
-    UserGoals,
-    UserAchievements,
-    UserStatistics,
-  },
+
 
   data: () => ({
     drawer: null,
@@ -61,6 +50,10 @@ export default {
     //TODO: help: why is it that I need to put this here but not everyting has to go here like now goal info isn't needed here?
     currentUser: null,
     userLevel: null,
+    userPfp: null,
+    userName: null,
+    userTotalMinutes: null,
+
   }),
 
   created() {
@@ -81,28 +74,107 @@ export default {
   },
 
   mounted() {
-    //console.log("ROUTE PARAMS: ", this.$route.params);
-    this.userRole = this.$route.params.userRole;
-    if (this.userRole || this.userRole == "user") {
-      // if the user trying to access this page is not an admin,
-      //then redirect them to the home page
-      this.getUserDocument();
-    } else {
-      this.$router.push("home");
-    }
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.currentUser = user;
+        this.currentUserId = firebase.auth().currentUser.uid;
+        this.userPfp = firebase.auth().currentUser.photoURL;
+        this.userName = firebase.auth().currentUser.displayName;
+        // a user has just logged in, so we need to get his/her document
+        // from our users collection
+        this.getUserDocument(user.uid);
+      } else {
+        this.currentUser = null;
+        this.userRole = null;
+        this.$router.push("/")
+      }
+    });
   },
 
   methods: {
+    //checking if the user is made or not
+    getUserDocument(userId) {
+      const db = firebase.app().firestore();
+      db.collection("users")
+        .doc(userId)
+        .get()
+        .then((doc) => {
+          if (doc.exists == true) {
+            // console.log("User document:", doc.data());
+            this.userRole = doc.data().role;
+            this.userExperience = doc.data().userExperience;
+            this.userLevel = doc.data().userLevel;
+            this.userTotalGoalsComplated = doc.data().userTotalGoalsComplated;
+            this.userTotalMinutes = doc.data().userTotalMinutes;
+          } else {
+            // console.log("THE USER DOCUMENT DOES NOT EXIST...");
+            this.createUserDocument();
+          }
+        })
+        .catch((error) => console.log(error));
+    },
 
+    createUserDocument() {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        const db = firebase.app().firestore();
+        //defaults fields
+        this.userRole = "user";
+        this.userExperience = 0;
+        this.userLevel = 0;
+        this.userTotalGoalsComplated = 0;
+        this.userTotalMinutes = 0;
 
-    signOut() {
+        db.collection("users")
+          .doc(user.uid)
+          .set(
+            {
+              userExperience: this.userExperience,
+              userLevel: this.userLevel,
+              role: this.userRole,
+              userTotalGoalsComplated: this.userTotalGoalsComplated,
+              userTotalMinutes: this.userTotalMinutes,
+            },
+            { merge: true }
+          )
+          .then(() => console.log("USER DOCUMENT CREATED"))
+          .catch((e) => console.log(e));
+
+        //this will make an example goal for the user but just remember it doesn't make any logs
+        db.collection("users")
+          .doc(user.uid)
+          .collection("goals")
+          .doc()
+          .set({
+            goalDetails: "Information that you want to add on top of the goal",
+            goalDueDate: Date().toLocaleString(),
+            goalExperienceReward: 150,
+            goalMinutes: 2,
+            goalTitle: "Study for 2 hours!",
+            goalDifficulty: "hard",
+            tagId: ["zLj4InU289szGUs2i6lZ", "stuffandthings"],
+          });
+
+        db.collection("users")
+          .doc(user.uid)
+          .collection("achievments")
+          .doc()
+          .set({});
+
+        //TODO: make it so that when there is a new user they are welcomed to the site with a pop up! and not just a console.log...
+      } else {
+        console.log("cannot create user doc!");
+      }
+    },
+
+    logout() {
       firebase
         .auth()
         .signOut()
         .then(
           () => {
-            this.$router.push("home").catch(() => {});
-            // when a user logs out, redirect to the home view
+            this.$router.push("/").catch(() => {});
+            // when a user logs out, redirect to the login view
             // note that if you don't put the catch(), then
             // you may get a warning saying you should avoid redundant navigation
             console.log("Logged Out");
@@ -115,4 +187,6 @@ export default {
   },
 };
 </script>
-    
+
+<style>
+</style>

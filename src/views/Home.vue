@@ -4,7 +4,8 @@
       <v-container fill-height>
         <v-row >
           <v-col cols="12" sm="6" md="8">
-            <h1 class="text-md-center white--text">Keep track of how your goals with time</h1>
+            <h1 class="text-md-center white--text">Tempo</h1>
+            <h1 class="text-md-center white--text">Keeping track of your goals</h1>
             <p class="text-md-center white--text">Tempo is a great tool to keep track of the time that you are putting into your goals and show you how far you've come!</p>
           </v-col>
           <v-col cols="6" md="4">

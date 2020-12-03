@@ -86,7 +86,6 @@
               </v-row>
             </v-container>
             <v-divider></v-divider>
-
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -130,7 +129,13 @@ export default {
     menu: false,
   }),
 
-  props: ["currentUserId"],
+  mounted() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.currentUserId = firebase.auth().currentUser.uid;
+      }
+    });
+  },
 
   methods: {
     resetForm() {
