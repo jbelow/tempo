@@ -17,13 +17,12 @@ export default {
       if (user) {
         this.$router.push({name: 'userGoals'}).catch(() => {});
       } else {
-        console.log("this is App.vue and it says you are not logged in")
+        console.log("this is App.vue and it says you are not logged in");
       }
     });
   },
 };
 </script>
-
 
 <style lang="scss">
 </style>

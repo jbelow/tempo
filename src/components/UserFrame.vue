@@ -16,19 +16,15 @@
         <v-avatar class="mb-4" size="64"><img v-bind:src="userPfp" /></v-avatar>
         <div>{{ userName }}</div>
         <div>Level: {{ userLevel }}</div>
-        <div>Minutes logged: {{ userTotalMinutes }}</div>
+
       </v-sheet>
 
       <v-divider></v-divider>
-
-      <v-list>
-        <v-list-item v-for="[icon, text] in links" :key="icon" link>
-          <v-list-item-icon>
-            <v-icon>{{ icon }}</v-icon>
-          </v-list-item-icon>
-
+      <v-list dense nav>
+        <v-list-item v-for="item in items" :key="item.title" link>
           <v-list-item-content>
-            <v-list-item-title>{{ text }}</v-list-item-title>
+            <v-list-item :to="item.link">{{ item.title }}</v-list-item>
+<!-- {{ item.title }} -->
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -40,19 +36,19 @@
 import firebase from "firebase";
 import "firebase/auth";
 
-
 export default {
-
-
   data: () => ({
+    selectedItem: 0,
+    items: [
+      { title: "Goals", link: "user-goals" },
+      { title: "Achievements", link: "user-achievements" },
+      { title: "Statistics", link: "user-statistics" },
+    ],
     drawer: null,
-    links: [["Goals"], ["Achievements"], ["Stats"]],
-    //TODO: help: why is it that I need to put this here but not everyting has to go here like now goal info isn't needed here?
     currentUser: null,
     userLevel: null,
     userPfp: null,
     userName: null,
-    userTotalMinutes: null,
 
   }),
 
@@ -86,7 +82,7 @@ export default {
       } else {
         this.currentUser = null;
         this.userRole = null;
-        this.$router.push("/")
+        this.$router.push("/");
       }
     });
   },
