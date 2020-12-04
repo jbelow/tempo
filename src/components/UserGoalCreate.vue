@@ -18,6 +18,7 @@
                   <v-text-field
                     v-model="goal.title"
                     label="Goal Title"
+                    :rules="titleRules"
                     required
                   ></v-text-field>
                 </v-col>
@@ -26,6 +27,8 @@
                   <v-text-field
                     v-model="goal.minutes"
                     label="Minutes"
+                    type="number"
+                    :rules="minutesRules"
                     hint="how many minutes before this goal is complete"
                     required
                   ></v-text-field>
@@ -35,6 +38,7 @@
                   <v-text-field
                     v-model="goal.details"
                     label="Details"
+                    :rules="detailsRules"
                     hint="give more details about what your goal really is"
                     required
                   ></v-text-field>
@@ -43,6 +47,7 @@
                 <v-col cols="12" sm="6">
                   <v-autocomplete
                     v-model="goal.difficulty"
+                    :rules="difficultyRules"
                     :items="['Easy', 'Medium', 'Hard']"
                     label="Difficulty"
                   ></v-autocomplete>
@@ -62,6 +67,7 @@
                       <v-text-field
                         v-model="goal.date"
                         label="Due date"
+                        :rules="dateRules"
                         prepend-icon="mdi-calendar"
                         readonly
                         v-bind="attrs"
@@ -109,23 +115,22 @@ export default {
   data: () => ({
     goal: [],
 
+    title: "",
+    titleRules: [(v) => !!v || "Title is required"],
+
+    Minutes: "",
+    minutesRules: [(v) => !!v || "Minutes is required"],
+    details: "",
+    detailsRules: [(v) => !!v || "details is required"],
+    difficulty: "",
+    difficultyRules: [(v) => !!v || "difficulty is required"],
+    date: new Date().toISOString().substr(0, 10),
+    dateRules: [(v) => !!v || "date is required"],
+
     valid: true,
-    name: "",
-    nameRules: [
-      (v) => !!v || "Name is required",
-      (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
-    ],
-    email: "",
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-    ],
-    select: null,
-    items: ["Item 1", "Item 2", "Item 3", "Item 4"],
     checkbox: false,
     dialog: false,
 
-    date: new Date().toISOString().substr(0, 10),
     menu: false,
   }),
 
@@ -145,6 +150,7 @@ export default {
     },
 
     goalCreate() {
+      this.$refs.form.validate();
       //the user doesn't get to pick how much xp they get, but instead they pick how hard the goal is
       switch (this.goal.difficulty) {
         case "Easy":
@@ -175,6 +181,7 @@ export default {
           goalDueDate: timeStamp,
           goalExperienceReward: this.goal.experience,
           goalMinutes: this.goal.minutes,
+          goalMinutesProgress: 0,
           goalDifficulty: this.goal.difficulty,
         });
       //once the goal is made then reset

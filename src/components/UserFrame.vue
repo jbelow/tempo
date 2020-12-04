@@ -1,9 +1,9 @@
 <template>
   <div>
-    <v-app-bar app>
+    <v-app-bar app class="blue lighten-5">
       <v-toolbar-title>Hello</v-toolbar-title>
       <v-spacer></v-spacer>
-      <button @click="logout">Sign out</button>
+      <button @click="logout">Log out</button>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -24,7 +24,6 @@
         <v-list-item v-for="item in items" :key="item.title" link>
           <v-list-item-content>
             <v-list-item :to="item.link">{{ item.title }}</v-list-item>
-<!-- {{ item.title }} -->
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -145,7 +144,8 @@ export default {
             goalDetails: "Information that you want to add on top of the goal",
             goalDueDate: Date().toLocaleString(),
             goalExperienceReward: 150,
-            goalMinutes: 2,
+            goalMinutesProgress: 0,
+            goalMinutes: 120,
             goalTitle: "Study for 2 hours!",
             goalDifficulty: "hard",
             tagId: ["zLj4InU289szGUs2i6lZ", "stuffandthings"],
