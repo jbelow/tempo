@@ -103,7 +103,7 @@ export default {
             {
               userExperience: this.userExperience,
               userLevel: this.userLevel,
-              role: this.userRole,
+              userRole: this.userRole,
               userTotalGoalsComplated: this.userTotalGoalsComplated,
               userTotalMinutes: this.userTotalMinutes,
             },

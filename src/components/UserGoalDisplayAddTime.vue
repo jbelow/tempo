@@ -10,23 +10,21 @@
             <span class="headline">Log you minutes</span>
           </v-card-title>
           <v-card-text>
-              <v-text-field
-                v-model="goal.minutesProgress"
-                label="Minutes"
-                type="number"
-                :rules="minutesRules"
-                hint="how much time have you worked on this goal?"
-                required
-              ></v-text-field>
+            <v-text-field
+              v-model="goal.minutesProgress"
+              label="Minutes"
+              type="number"
+              :rules="minutesRules"
+              hint="how much time have you worked on this goal?"
+              required
+            ></v-text-field>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="resetForm()">
               Close
             </v-btn>
-            <v-btn color="blue darken-1" text @click="addTime()">
-              Add
-            </v-btn>
+            <v-btn color="blue darken-1" text @click="addTime()"> Add </v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -38,8 +36,7 @@
 import firebase from "firebase";
 
 export default {
-
-  props: ['goalId'],
+  props: ["goalId", "minutesProgress"],
 
   data: () => ({
     goal: [],
@@ -59,7 +56,6 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.currentUserId = firebase.auth().currentUser.uid;
-        
       }
     });
   },
@@ -72,16 +68,39 @@ export default {
     },
 
     addTime() {
-      console.log("this is in addTime: " + this.goalId)
       this.$refs.form.validate();
       const db = firebase.app().firestore();
+
+      let newMinutes =
+        parseInt(this.minutesProgress) + parseInt(this.goal.minutesProgress);
+
       db.collection("users")
         .doc(this.currentUserId)
         .collection("goals")
         .doc(this.goalId)
+        .set(
+          {
+            goalMinutesProgress: newMinutes,
+          },
+          { merge: true }
+        );
+
+      db.collection("users")
+        .doc(this.currentUserId)
+        .collection("goals")
+        .doc(this.goalId)
+        .collection("goalLog")
         .set({
-          goalMinutesProgress: this.goal.minutesProgress,
-        }, { merge: true });
+          goalLoggedDate: Date().toLocaleString(),
+          goalLoggedMinuntes: this.goalMinutesProgress,
+        });
+
+      db.collection("users")
+      .doc(this.currentUserId)
+      .set({
+        userTotalMinutes: 
+      });
+
       //once the goal is made then reset
       this.resetForm();
     },

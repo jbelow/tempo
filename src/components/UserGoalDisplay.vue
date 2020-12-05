@@ -4,7 +4,7 @@
       <v-card class="blue darken-2" outlined>
         <v-card-title class="white--text">
           <h3>
-            {{ g.title }}
+            {{ g.title }} - Due on: {{g.dueDate}}
           </h3>
           <v-spacer></v-spacer>
           <!-- options/menu -->
@@ -101,7 +101,7 @@
 
         <v-card-actions>
           {{g.id}}
-          <UserGoalDisplayAddTime v-bind:goalId="g.id" />
+          <UserGoalDisplayAddTime v-bind:goalId="g.id" v-bind:minutesProgress="g.minutesProgress"/>
           <v-btn class="cyan darken-1 white--text"> Add Time </v-btn>
         </v-card-actions>
       </v-card>
@@ -141,6 +141,8 @@ export default {
               const goal = {};
               goal.id = doc.id;
               goal.title = doc.data().goalTitle;
+              goal.dueDate = doc.data().goalDueDate;
+              
               goal.details = doc.data().goalDetails;
               goal.minutesProgress = doc.data().goalMinutesProgress;
               goal.minutes = doc.data().goalMinutes;
