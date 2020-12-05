@@ -89,7 +89,7 @@
           </v-menu>
           <!--  options/menu end-->
           <v-list-item>
-            <v-list-item-content class=" white--text">
+            <v-list-item-content class="white--text">
               Progress: {{ g.minutesProgress }}/{{ g.minutes }} minutes
               <br />
               Difficulty: {{ g.difficulty }}
@@ -100,7 +100,9 @@
         </v-card-title>
 
         <v-card-actions>
-          <v-btn> Add Time </v-btn>
+          {{g.id}}
+          <UserGoalDisplayAddTime v-bind:goalId="g.id" />
+          <v-btn class="cyan darken-1 white--text"> Add Time </v-btn>
         </v-card-actions>
       </v-card>
     </div>
@@ -109,8 +111,14 @@
 
 <script>
 import firebase from "firebase";
+import UserGoalDisplayAddTime from "../components/UserGoalDisplayAddTime";
 
 export default {
+
+  components: {
+    UserGoalDisplayAddTime,
+  },
+
   data() {
     return {
       goals: [],
@@ -129,6 +137,7 @@ export default {
           .onSnapshot((snapshotChange) => {
             this.goals = [];
             snapshotChange.forEach((doc) => {
+
               const goal = {};
               goal.id = doc.id;
               goal.title = doc.data().goalTitle;

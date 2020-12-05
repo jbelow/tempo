@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-app-bar app class="blue lighten-5">
-      <v-toolbar-title>Tempo</v-toolbar-title>
+    <v-app-bar app class="light-blue darken-1 white--text">
+      <v-toolbar-title class="funFont">Tempo</v-toolbar-title>
       <v-spacer></v-spacer>
       <button @click="logout">Log out</button>
     </v-app-bar>
@@ -12,7 +12,7 @@
       app
       disable-resize-watcher
     >
-      <v-sheet class="pa-9 light-blue darken-2 white--text">
+      <v-sheet class="pa-9 light-blue darken-3 white--text">
         <v-avatar class="mb-4" size="64"><img v-bind:src="userPfp" /></v-avatar>
         <div>{{ userName }}</div>
       </v-sheet>
@@ -162,4 +162,8 @@ export default {
 </script>
 
 <style>
+.funFont{
+  font-family: 'Fredoka One', 'Courier New', Courier, monospace;
+  
+}
 </style>

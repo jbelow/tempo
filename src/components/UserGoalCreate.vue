@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" scrollable max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">
+        <v-btn class="cyan darken-2" dark v-bind="attrs" v-on="on">
           Create New Goal
         </v-btn>
       </template>
