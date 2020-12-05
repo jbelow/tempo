@@ -14,11 +14,7 @@ const routes = [
     name: 'userGoals',
     component: () => import('../views/UserGoals.vue')
   },
-  {
-    path: '/user-achievements',
-    name: 'userAchievements',
-    component: () => import('../views/UserAchievements.vue')
-  },
+
   {
     path: '/user-statistics',
     name: 'userStatistics',

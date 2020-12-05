@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar app class="blue lighten-5">
-      <v-toolbar-title>Hello</v-toolbar-title>
+      <v-toolbar-title>Tempo</v-toolbar-title>
       <v-spacer></v-spacer>
       <button @click="logout">Log out</button>
     </v-app-bar>
@@ -15,8 +15,6 @@
       <v-sheet class="pa-9 light-blue darken-2 white--text">
         <v-avatar class="mb-4" size="64"><img v-bind:src="userPfp" /></v-avatar>
         <div>{{ userName }}</div>
-        <div>Level: {{ userLevel }}</div>
-
       </v-sheet>
 
       <v-divider></v-divider>
@@ -40,33 +38,13 @@ export default {
     selectedItem: 0,
     items: [
       { title: "Goals", link: "user-goals" },
-      { title: "Achievements", link: "user-achievements" },
       { title: "Statistics", link: "user-statistics" },
     ],
     drawer: null,
     currentUser: null,
-    userLevel: null,
     userPfp: null,
     userName: null,
-
   }),
-
-  created() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.currentUser = user;
-        this.userPfp = firebase.auth().currentUser.photoURL;
-        this.userName = firebase.auth().currentUser.displayName;
-        this.currentUserId = firebase.auth().currentUser.uid;
-        // a user has just logged in, so we need to get his/her document
-        // from our users collection
-        this.getUserDocument(user.uid);
-      } else {
-        this.currentUser = null;
-        this.userRole = null;
-      }
-    });
-  },
 
   mounted() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -81,7 +59,7 @@ export default {
       } else {
         this.currentUser = null;
         this.userRole = null;
-        this.$router.push("/");
+        this.$router.push({ name: 'home'});
       }
     });
   },
@@ -94,7 +72,7 @@ export default {
         .doc(userId)
         .get()
         .then((doc) => {
-          if (doc.exists == true) {
+          if (doc.exists) {
             // console.log("User document:", doc.data());
             this.userRole = doc.data().role;
             this.userExperience = doc.data().userExperience;
@@ -102,7 +80,6 @@ export default {
             this.userTotalGoalsComplated = doc.data().userTotalGoalsComplated;
             this.userTotalMinutes = doc.data().userTotalMinutes;
           } else {
-            // console.log("THE USER DOCUMENT DOES NOT EXIST...");
             this.createUserDocument();
           }
         })
@@ -130,7 +107,7 @@ export default {
               userTotalGoalsComplated: this.userTotalGoalsComplated,
               userTotalMinutes: this.userTotalMinutes,
             },
-            { merge: true }
+            // { merge: true }
           )
           .then(() => console.log("USER DOCUMENT CREATED"))
           .catch((e) => console.log(e));
@@ -151,11 +128,11 @@ export default {
             tagId: ["zLj4InU289szGUs2i6lZ", "stuffandthings"],
           });
 
-        db.collection("users")
-          .doc(user.uid)
-          .collection("achievments")
-          .doc()
-          .set({});
+        // db.collection("users")
+        //   .doc(user.uid)
+        //   .collection("achievments")
+        //   .doc()
+        //   .set({});
 
         //TODO: make it so that when there is a new user they are welcomed to the site with a pop up! and not just a console.log...
       } else {

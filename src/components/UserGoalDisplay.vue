@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="goalStyle py-5 mx-lg-auto" v-for="g in goals" :key="g.id">
-      <v-card class="blue darken-2" id="goal-display" outlined>
+      <v-card class="blue darken-2" outlined>
         <v-card-title class="white--text">
           <h3>
             {{ g.title }}
