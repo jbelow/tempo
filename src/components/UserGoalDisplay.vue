@@ -100,8 +100,7 @@
         </v-card-title>
 
         <v-card-actions>
-          {{g.id}}
-          <UserGoalDisplayAddTime v-bind:goalId="g.id" v-bind:minutesProgress="g.minutesProgress"/>
+          <UserGoalDisplayAddTime v-bind:goalId="g.id" v-bind:currentMinutesProgress="g.minutesProgress"/>
           <v-btn class="cyan darken-1 white--text"> Add Time </v-btn>
         </v-card-actions>
       </v-card>

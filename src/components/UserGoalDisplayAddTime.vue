@@ -36,7 +36,7 @@
 import firebase from "firebase";
 
 export default {
-  props: ["goalId", "minutesProgress"],
+  props: ["goalId", "currentMinutesProgress"],
 
   data: () => ({
     goal: [],
@@ -44,7 +44,6 @@ export default {
     Minutes: "",
     minutesRules: [(v) => !!v || "Minutes is required"],
 
-    currentMinutesProgress: null,
 
     valid: true,
     checkbox: false,
@@ -71,8 +70,7 @@ export default {
       this.$refs.form.validate();
       const db = firebase.app().firestore();
 
-      let newMinutes =
-        parseInt(this.minutesProgress) + parseInt(this.goal.minutesProgress);
+      let newMinutes = parseInt(this.currentMinutesProgress) + parseInt(this.goal.minutesProgress);
 
       db.collection("users")
         .doc(this.currentUserId)
@@ -90,16 +88,25 @@ export default {
         .collection("goals")
         .doc(this.goalId)
         .collection("goalLog")
+        .doc()
         .set({
           goalLoggedDate: Date().toLocaleString(),
-          goalLoggedMinuntes: this.goalMinutesProgress,
+          goalLoggedMinuntes: this.goal.minutesProgress,
         });
 
-      db.collection("users")
-      .doc(this.currentUserId)
-      .set({
-        userTotalMinutes: 
-      });
+      // db.collection("users")
+      //   .doc(this.currentUserId)
+      //   .get()
+      //   .then((doc) => {
+      //     this.userTotalMinutes = doc.data().userTotalMinutes;
+      //   })
+      //   .catch((error) => console.log(error));
+
+      // this.userTotalMinutes + 
+
+      // db.collection("users").doc(this.currentUserId).set({
+      //   userTotalMinutes: 4,
+      // });
 
       //once the goal is made then reset
       this.resetForm();
