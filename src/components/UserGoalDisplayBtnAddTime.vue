@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" scrollable max-width="600px">
+    <v-dialog v-model="dialog" scrollable max-width="400px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn class="cyan darken-1 white--text" dark v-bind="attrs" v-on="on">
           Add time
@@ -79,6 +79,7 @@ export default {
     },
 
     addTime() {
+      if (this.$refs.form.validate()){
       this.$refs.form.validate();
       const db = firebase.app().firestore();
 
@@ -105,13 +106,13 @@ export default {
         .doc()
         .set({
           goalLoggedDate: Date().toLocaleString(),
-          goalLoggedMinuntes: this.goal.minutesProgress,
+          goalLoggedMinutes: this.goal.minutesProgress,
         });
 
-      console.log("outside the then: " + this.currentUserMinutes);
+      // console.log("outside the then: " + this.currentUserMinutes);
 
       let newUserMinutes = parseInt(this.goal.minutesProgress) + parseInt( this.currentUserMinutes);
-      console.log("new user minutes" + newUserMinutes);
+      // console.log("new user minutes" + newUserMinutes);
 
       db.collection("users").doc(this.currentUserId).set({
         userTotalMinutes: newUserMinutes,
@@ -120,6 +121,7 @@ export default {
 
       //once the goal is made then reset
       this.resetForm();
+      }
     },
   },
 };

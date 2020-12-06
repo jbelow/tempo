@@ -150,42 +150,43 @@ export default {
     },
 
     goalCreate() {
-      this.$refs.form.validate();
-      //the user doesn't get to pick how much xp they get, but instead they pick how hard the goal is
-      switch (this.goal.difficulty) {
-        case "Easy":
-          this.goal.experience = 10;
-          break;
-        case "Medium":
-          this.goal.experience = 25;
-          break;
-        case "Hard":
-          this.goal.experience = 50;
-          break;
-        default:
-          this.goal.experience = 0;
-          break;
+      if (this.$refs.form.validate()) {
+        //the user doesn't get to pick how much xp they get, but instead they pick how hard the goal is
+        switch (this.goal.difficulty) {
+          case "Easy":
+            this.goal.experience = 10;
+            break;
+          case "Medium":
+            this.goal.experience = 25;
+            break;
+          case "Hard":
+            this.goal.experience = 50;
+            break;
+          default:
+            this.goal.experience = 0;
+            break;
+        }
+
+        let splitDate = this.goal.date.split("-");
+        let timeStamp = new Date(splitDate[0], splitDate[1], splitDate[2]);
+
+        const db = firebase.app().firestore();
+        db.collection("users")
+          .doc(this.currentUserId)
+          .collection("goals")
+          .doc()
+          .set({
+            goalTitle: this.goal.title,
+            goalDetails: this.goal.details,
+            goalDueDate: timeStamp,
+            goalExperienceReward: this.goal.experience,
+            goalMinutes: this.goal.minutes,
+            goalMinutesProgress: 0,
+            goalDifficulty: this.goal.difficulty,
+          });
+        //once the goal is made then reset
+        this.resetForm();
       }
-
-      let splitDate = this.goal.date.split("-");
-      let timeStamp = new Date(splitDate[0], splitDate[1], splitDate[2]);
-
-      const db = firebase.app().firestore();
-      db.collection("users")
-        .doc(this.currentUserId)
-        .collection("goals")
-        .doc()
-        .set({
-          goalTitle: this.goal.title,
-          goalDetails: this.goal.details,
-          goalDueDate: timeStamp,
-          goalExperienceReward: this.goal.experience,
-          goalMinutes: this.goal.minutes,
-          goalMinutesProgress: 0,
-          goalDifficulty: this.goal.difficulty,
-        });
-      //once the goal is made then reset
-      this.resetForm();
     },
   },
 };

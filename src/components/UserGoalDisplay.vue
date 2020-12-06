@@ -102,7 +102,7 @@
         <v-card-actions>
           <UserGoalDisplayBtnAddTime v-bind:goalId="g.id" v-bind:currentMinutesProgress="g.minutesProgress"/>
           <UserGoalDisplayBtnComplate/>
-          <v-btn>View Log</v-btn>
+          <UserGoalDisplayBtnViewLog v-bind:goalId="g.id" v-bind:goalTitle="g.title"/>
         </v-card-actions>
       </v-card>
     </div>
@@ -113,12 +113,14 @@
 import firebase from "firebase";
 import UserGoalDisplayBtnAddTime from "../components/UserGoalDisplayBtnAddTime";
 import UserGoalDisplayBtnComplate from "../components/UserGoalDisplayBtnComplate";
+import UserGoalDisplayBtnViewLog from "../components/UserGoalDisplayBtnViewLog";
 
 export default {
 
   components: {
     UserGoalDisplayBtnAddTime,
     UserGoalDisplayBtnComplate,
+    UserGoalDisplayBtnViewLog,
   },
 
   data() {
