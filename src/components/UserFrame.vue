@@ -107,7 +107,7 @@ export default {
               userTotalGoalsComplated: this.userTotalGoalsComplated,
               userTotalMinutes: this.userTotalMinutes,
             },
-            // { merge: true }
+            { merge: true }
           )
           .then(() => console.log("USER DOCUMENT CREATED"))
           .catch((e) => console.log(e));

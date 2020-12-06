@@ -23,7 +23,7 @@
         >
           <v-list-item-content>
             <v-list-item-title class="headline mb-1 text-md-center white--text">
-              Total Time Logged: {{ userExperience }}
+              Total Minutes Logged: {{ userTotalMinutes }}
             </v-list-item-title>
           </v-list-item-content>
         </v-card>
@@ -46,6 +46,8 @@ export default {
     userLevel: null,
     userExperience: null,
     userCompletedGoals: null,
+    userTotalGoalsComplated: null,
+    userTotalMinutes: null,
   }),
 
   mounted() {

@@ -2,7 +2,9 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" scrollable max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on"> Add time </v-btn>
+        <v-btn class="cyan darken-1 white--text" dark v-bind="attrs" v-on="on">
+          Add time
+        </v-btn>
       </template>
       <v-form ref="form" @submit.prevent="submit">
         <v-card>
@@ -44,17 +46,27 @@ export default {
     Minutes: "",
     minutesRules: [(v) => !!v || "Minutes is required"],
 
-
     valid: true,
     checkbox: false,
     dialog: false,
     menu: false,
+    currentUserMinutes: null,
   }),
 
   mounted() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.currentUserId = firebase.auth().currentUser.uid;
+
+        const db = firebase.app().firestore();
+        db.collection("users")
+          .doc(this.currentUserId)
+          .get()
+          .then((doc) => {
+            this.currentUserMinutes = doc.data().userTotalMinutes;
+            // console.log("in the then:" + this.currentUserMinutes);
+          })
+          .catch((error) => console.log(error));
       }
     });
   },
@@ -70,7 +82,9 @@ export default {
       this.$refs.form.validate();
       const db = firebase.app().firestore();
 
-      let newMinutes = parseInt(this.currentMinutesProgress) + parseInt(this.goal.minutesProgress);
+      let newMinutes =
+        parseInt(this.currentMinutesProgress) +
+        parseInt(this.goal.minutesProgress);
 
       db.collection("users")
         .doc(this.currentUserId)
@@ -94,19 +108,15 @@ export default {
           goalLoggedMinuntes: this.goal.minutesProgress,
         });
 
-      // db.collection("users")
-      //   .doc(this.currentUserId)
-      //   .get()
-      //   .then((doc) => {
-      //     this.userTotalMinutes = doc.data().userTotalMinutes;
-      //   })
-      //   .catch((error) => console.log(error));
+      console.log("outside the then: " + this.currentUserMinutes);
 
-      // this.userTotalMinutes + 
+      let newUserMinutes = parseInt(this.goal.minutesProgress) + parseInt( this.currentUserMinutes);
+      console.log("new user minutes" + newUserMinutes);
 
-      // db.collection("users").doc(this.currentUserId).set({
-      //   userTotalMinutes: 4,
-      // });
+      db.collection("users").doc(this.currentUserId).set({
+        userTotalMinutes: newUserMinutes,
+      },
+      { merge: true });
 
       //once the goal is made then reset
       this.resetForm();
