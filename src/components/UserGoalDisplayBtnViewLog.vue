@@ -6,20 +6,23 @@
       </v-btn>
     </template>
     <v-card>
+      <v-card-title class="headline indigo darken-1 white--text">
+        Logs for {{ this.goalTitle }}</v-card-title
+      >
       <v-card-text>
-        <!-- <div class="font-weight-bold ml-8 mb-2">{{ GoalTitle }}</div> -->
-        <div>List of logs for {{ this.goalTitle }}</div>
-
         <v-timeline align-top dense>
-          <v-timeline-item v-for="l in logs" :key="l.id" small>
-            <div>
+          <v-timeline-item v-for="l in logs" :key="l.id" small color="indigo lighten-1">
               <div class="font-weight-normal">
-                {{ moment(l.LoggedDate).format('MMM Do YYYY') }} <br> you logged: {{ l.loggedMinutes }} minutes
+                {{ moment(l.LoggedDate).format("MMM Do, YYYY h:ma") }} <br />{{
+                  l.loggedMinutes
+                }}
+                minutes
               </div>
-              <!-- <div>{{ log.message }}</div> -->
-            </div>
           </v-timeline-item>
         </v-timeline>
+        <v-btn color="indigo darken-1" text @click="dialog = false">
+          Close
+        </v-btn>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -51,6 +54,7 @@ export default {
           .collection("goals")
           .doc(this.goalId)
           .collection("goalLog")
+          .orderBy("goalLoggedDate", "desc")
           .onSnapshot((snapshotChange) => {
             this.logs = [];
             snapshotChange.forEach((doc) => {
