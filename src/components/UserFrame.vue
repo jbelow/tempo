@@ -113,7 +113,7 @@ export default {
           .then(() => console.log("USER DOCUMENT CREATED"))
           .catch((e) => console.log(e));
         
-        let timeStamp = moment(this.goal.date).valueOf()
+        let timeStamp = moment().valueOf()
 
         //this will make an example goal for the user but just remember it doesn't make any logs
         db.collection("users")

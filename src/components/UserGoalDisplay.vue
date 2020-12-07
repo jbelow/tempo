@@ -1,8 +1,7 @@
 <template>
   <div>
     <div class="goalStyle py-5 mx-lg-auto" v-for="g in goals" :key="g.id">
-
-      <div v-if="(g.complated == false)">
+      <div v-if="g.complated == false">
         <v-card class="blue darken-2">
           <v-card-title class="white--text blue">
             <h3>
@@ -37,21 +36,29 @@
               Progress: {{ g.minutesProgress }}/{{ g.minutes }} minutes
               <br />
               Difficulty: {{ g.difficulty }}
-              <br>
+              <br />
               Details: {{ g.details }}
             </v-list-item-content>
           </v-list-item>
 
           <v-card-actions>
-            <UserGoalDisplayBtnAddTime
-              v-bind:goalId="g.id"
-              v-bind:currentMinutesProgress="g.minutesProgress"
-            />
-            <UserGoalDisplayBtnComplate v-bind:goalId="g.id" v-bind:goalExperience="g.experience"/>
+            <v-row justify="center">
+              <v-col md="2">
+                <UserGoalDisplayBtnAddTime
+                  v-bind:goalId="g.id"
+                  v-bind:currentMinutesProgress="g.minutesProgress"
+                />
+              </v-col>
+              <v-col md="2">
+                <UserGoalDisplayBtnComplate
+                  v-bind:goalId="g.id"
+                  v-bind:goalExperience="g.experience"
+                />
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-card>
       </div>
-
     </div>
   </div>
 </template>

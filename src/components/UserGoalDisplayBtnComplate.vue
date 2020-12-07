@@ -1,10 +1,10 @@
 <template>
-  <v-list-item link>
+  <div>
     <v-dialog v-model="dialog" width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-list-item-title dark v-bind="attrs" v-on="on">
+        <v-btn class="cyan darken-1 white--text" dark v-bind="attrs" v-on="on">
           Complate
-        </v-list-item-title>
+        </v-btn>
       </template>
       <v-card>
         <v-card-text class="headline">
@@ -26,7 +26,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-list-item>
+  </div>
 </template>
 
 <script>
@@ -39,32 +39,40 @@ export default {
       dialog: false,
       currentUserTotalGoalsComplated: null,
       currentUserExperience: null,
+      currentUserId: null,
     };
   },
 
   mounted() {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.currentUserId = firebase.auth().currentUser.uid;
-      }
+      this.setId(user.uid);
+
+      const db = firebase.app().firestore();
+
+      db.collection("users")
+        .doc(user.uid)
+        .get()
+        .then((doc) => {
+          this.userRole = doc.data().role;
+          this.currentUserTotalGoalsComplated = doc.data().userTotalGoalsComplated;
+          this.currentUserExperience = doc.data().userExperience;
+          console.log(this.currentUserTotalGoalsComplated);
+        });
     });
-
-    const db = firebase.app().firestore();
-
-    db.collection("users")
-      .doc(this.currentUserId)
-      .get()
-      .then((doc) => {
-        this.currentUserTotalGoalsComplated = doc.data().userTotalGoalsComplated;
-        this.currentUserExperience = doc.data().userExperience;
-        console.log(this.currentUserTotalGoalsComplated);
-      });
   },
 
   methods: {
+    //the id is being really hard to work with so I made this to get it
+    setId(userId) {
+      this.currentUserId = userId;
+      console.log(this.currentUserId);
+
+    },
+
     complateGoal(id) {
-      // let newUserTotalGoalsComplated = this.currentUserTotalGoalsComplated + 1
-      // let newUserExperience = this.currentUserExperience + this.experience;
+      console.log("10 " + this.currentUserId)
+      let newUserTotalGoalsComplated = this.currentUserTotalGoalsComplated + 1
+      let newUserExperience = (this.currentUserExperience + this.experience);
 
       const db = firebase.app().firestore();
       db.collection("users")
@@ -75,13 +83,12 @@ export default {
           goalComplated: true,
         });
 
-      // db.collection("users").doc(this.currentUserId).set({
-      //   UserTotalGoalsComplated: newcurrentUserTotalGoalsComplated,
-      //   userExperience:
-      // });
-
-      //once the goal is made then reset
-      this.resetForm();
+      db.collection("users").doc(this.currentUserId).set({
+        UserTotalGoalsComplated: newUserTotalGoalsComplated,
+        userExperience: newUserExperience,
+      },
+      { merge: true }
+      );
     },
   },
 };
