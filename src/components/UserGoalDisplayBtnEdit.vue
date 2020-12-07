@@ -9,7 +9,7 @@
       <v-form ref="form" @submit.prevent="submit">
         <v-card>
           <v-card-title>
-            <span class="headline">Edit Goal</span>
+            <span class="headline">Edit {{this.title}}</span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -26,7 +26,7 @@
                 <v-col cols="12" sm="6" md="4">
                   <v-text-field
                     v-model="goal.minutes"
-                    label="Minutes"
+                    label="minutes"
                     type="number"
                     :rules="minutesRules"
                     hint="how many minutes before this goal is complete"
@@ -114,7 +114,7 @@ import firebase from "firebase";
 import moment from "moment";
 
 export default {
-  props: ["goalId"],
+  props: ["goalId", "title",  "details", "minutes", "difficulty", "dueDate"],
 
   data: () => ({
     goal: [],
@@ -122,7 +122,7 @@ export default {
     title: "",
     titleRules: [(v) => !!v || "Title is required"],
 
-    Minutes: "",
+    minutes: "",
     minutesRules: [(v) => !!v || "Minutes is required"],
     details: "",
     detailsRules: [(v) => !!v || "details is required"],
@@ -142,6 +142,14 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.currentUserId = firebase.auth().currentUser.uid;
+
+        this.goal.title = this.title;
+        this.goal.details = this.details;
+        this.goal.minutes = this.minutes;
+        this.goal.difficulty = this.difficulty;
+        this.goal.date = "2000-04-12"
+
+
       }
     });
   },

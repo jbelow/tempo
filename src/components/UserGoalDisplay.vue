@@ -17,11 +17,20 @@
                 </v-btn>
               </template>
               <v-list>
-                <UserGoalDisplayBtnEdit v-bind:goalId="g.id" />
+                <UserGoalDisplayBtnEdit 
+                v-bind:goalId="g.id" 
+                v-bind:title="g.title" 
+                v-bind:details="g.details" 
+                v-bind:minutes="g.minutes" 
+                v-bind:difficulty="g.difficulty" 
+                v-bind:dueDate="g.dueDate" 
+                />
+
                 <UserGoalDisplayBtnViewLog
                   v-bind:goalId="g.id"
                   v-bind:goalTitle="g.title"
                 />
+
                 <UserGoalDisplayBtnDelete
                   v-bind:goalId="g.id"
                   v-bind:goalTitle="g.title"

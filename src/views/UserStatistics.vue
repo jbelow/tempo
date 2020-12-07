@@ -1,9 +1,18 @@
 <template>
   <v-app id="inspire">
     <UserFrame />
+
+    <!-- 
+      TODO:
+      1. xp
+      2. user role
+      3. total goals
+      4. total minutes
+      5. timeline of all logs (this is a maybe todo)
+     -->
     <v-main>
       <v-container class="py-8 px-6" fluid>
-        <!--  -->
+
         <v-card
           class="mx-auto blue darken-2 statStyle"
           id="goal-display"
@@ -11,11 +20,12 @@
         >
           <v-list-item-content>
             <v-list-item-title class="headline mb-1 text-md-center white--text">
-              Total Goals Completed: {{ userTotalGoalsCompleted }}
+              Goals Completed: {{ userTotalGoalsCompleted }}
             </v-list-item-title>
           </v-list-item-content>
         </v-card>
         <br />
+
         <v-card
           class="mx-auto blue darken-2 statStyle"
           id="goal-display"
@@ -23,10 +33,26 @@
         >
           <v-list-item-content>
             <v-list-item-title class="headline mb-1 text-md-center white--text">
-              Total Minutes Logged: {{ userTotalMinutes }}
+              Minutes Logged: {{ userTotalMinutes }}
             </v-list-item-title>
           </v-list-item-content>
         </v-card>
+        <br />
+
+        <v-card
+          class="mx-auto blue darken-2 statStyle"
+          id="goal-display"
+          outlined
+        >
+          <v-list-item-content>
+            <v-list-item-title class="headline mb-1 text-md-center white--text">
+              Experience: {{ userExperience }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-card>
+
+
+
       </v-container>
     </v-main>
   </v-app>
@@ -43,6 +69,7 @@ export default {
 
   data: () => ({
     currentUser: null,
+    userName: null,
     userLevel: null,
     userExperience: null,
     userCompletedGoals: null,
@@ -53,6 +80,7 @@ export default {
   mounted() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        this.userName = firebase.auth().currentUser.displayName;
         this.getUserDocument(user.uid);
       }
     });
