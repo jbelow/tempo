@@ -19,6 +19,9 @@ const routes = [
     path: '/user-statistics',
     name: 'userStatistics',
     component: () => import('../views/UserStatistics.vue'),
+  },
+  { path: '*', 
+  component: () => import('../views/NotFound.vue'),
   }
 ]
 
