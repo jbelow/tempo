@@ -142,7 +142,6 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.currentUserId = firebase.auth().currentUser.uid;
-
       }
     });
   },
@@ -174,7 +173,7 @@ export default {
         let timeStamp = moment(this.goal.date).valueOf();
 
         const db = firebase.app().firestore();
-      console.log("this is the goal ID: " + this.goalId)
+        //   console.log("this is the goal ID: " + this.goalId)
 
         db.collection("users")
           .doc(this.currentUserId)

@@ -9,7 +9,7 @@
       <v-card>
         <v-card-text class="headline">
           When you delete this goal there is no way of getting it back, instead
-          you might want to just make the goal complate? <b>{{ goalTitle}}</b
+          you might want to just make the goal complate? <b>{{ goalTitle }}</b
           >?
         </v-card-text>
         <v-divider></v-divider>
@@ -21,7 +21,7 @@
           <v-btn
             color="primary"
             text
-            @click="deleteGoal(g.id), (dialog = false)"
+            @click="deleteGoal(goalId), (dialog = false)"
           >
             Delete
           </v-btn>
@@ -42,8 +42,17 @@ export default {
     };
   },
 
+  mounted() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.currentUserId = firebase.auth().currentUser.uid;
+      }
+    });
+  },
+
   methods: {
     deleteGoal(id) {
+      console.log(id);
       const db = firebase.app().firestore();
       db.collection("users")
         .doc(this.currentUserId)
