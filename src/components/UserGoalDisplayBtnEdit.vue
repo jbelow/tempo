@@ -147,7 +147,9 @@ export default {
         this.goal.details = this.details;
         this.goal.minutes = this.minutes;
         this.goal.difficulty = this.difficulty;
-        this.goal.date = "2000-04-12"
+        // this.goal.date = "2000-04-12"
+        this.goal.date = moment(this.dueDate).format("YYYY-MM-DD")
+        console.log(this.goal.date)
 
 
       }
