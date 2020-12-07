@@ -4,10 +4,12 @@
       <v-card class="blue darken-2" outlined>
         <v-card-title class="white--text">
           <h3>
-            {{ g.title }} - Due on: {{g.dueDate}}
+            {{ g.title }} - Due on:
+            {{ moment(g.dueDate).format("MMM Do, YYYY") }}
           </h3>
           <v-spacer></v-spacer>
           <!-- options/menu -->
+
           <v-menu bottom left>
             <template v-slot:activator="{ on, attrs }">
               <v-btn dark icon v-bind="attrs" v-on="on">
@@ -15,76 +17,14 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item link>
-                <!-- --------------------------------- -->
-                <v-dialog v-model="dialog" width="500">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-list-item-title
-                      color="red lighten-2"
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      Delete
-                    </v-list-item-title>
-                  </template>
-                  <v-card>
-                    <v-card-text class="headline">
-                      Are you sure you want to delete <b>{{ g.title }}</b
-                      >?
-                    </v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="dialog = false">
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        color="primary"
-                        text
-                        @click="deleteGoal(g.id), (dialog = false)"
-                      >
-                        Delete
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-                <!-- --------------------------------- -->
-              </v-list-item>
-              <v-list-item link>
-                <v-dialog v-model="dialog" width="500">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-list-item-title
-                      color="red lighten-2"
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      Edit
-                    </v-list-item-title>
-                  </template>
-                  <v-card>
-                    <v-card-text class="headline">
-                      Are you sure you want to edit <b>{{ g.title }}</b
-                      >?
-                    </v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="dialog = false">
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        color="primary"
-                        text
-                        @click="deleteGoal(g.id), (dialog = false)"
-                      >
-                        Delete
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-list-item>
+              <UserGoalDisplayBtnDelete
+                v-bind:goalId="g.id"
+                v-bind:goalTitle="g.title"
+              />
+              <UserGoalDisplayBtnViewLog
+                v-bind:goalId="g.id"
+                v-bind:goalTitle="g.title"
+              />
             </v-list>
           </v-menu>
           <!--  options/menu end-->
@@ -100,9 +40,11 @@
         </v-card-title>
 
         <v-card-actions>
-          <UserGoalDisplayBtnAddTime v-bind:goalId="g.id" v-bind:currentMinutesProgress="g.minutesProgress"/>
-          <UserGoalDisplayBtnComplate/>
-          <UserGoalDisplayBtnViewLog v-bind:goalId="g.id" v-bind:goalTitle="g.title"/>
+          <UserGoalDisplayBtnAddTime
+            v-bind:goalId="g.id"
+            v-bind:currentMinutesProgress="g.minutesProgress"
+          />
+          <UserGoalDisplayBtnComplate />
         </v-card-actions>
       </v-card>
     </div>
@@ -111,16 +53,19 @@
 
 <script>
 import firebase from "firebase";
+import moment from "moment";
+
 import UserGoalDisplayBtnAddTime from "../components/UserGoalDisplayBtnAddTime";
 import UserGoalDisplayBtnComplate from "../components/UserGoalDisplayBtnComplate";
 import UserGoalDisplayBtnViewLog from "../components/UserGoalDisplayBtnViewLog";
+import UserGoalDisplayBtnDelete from "../components/UserGoalDisplayBtnDelete";
 
 export default {
-
   components: {
     UserGoalDisplayBtnAddTime,
     UserGoalDisplayBtnComplate,
     UserGoalDisplayBtnViewLog,
+    UserGoalDisplayBtnDelete,
   },
 
   data() {
@@ -141,12 +86,11 @@ export default {
           .onSnapshot((snapshotChange) => {
             this.goals = [];
             snapshotChange.forEach((doc) => {
-
               const goal = {};
               goal.id = doc.id;
               goal.title = doc.data().goalTitle;
               goal.dueDate = doc.data().goalDueDate;
-              
+
               goal.details = doc.data().goalDetails;
               goal.minutesProgress = doc.data().goalMinutesProgress;
               goal.minutes = doc.data().goalMinutes;
@@ -161,20 +105,24 @@ export default {
   },
 
   methods: {
-    deleteGoal(id) {
-      const db = firebase.app().firestore();
-      db.collection("users")
-        .doc(this.currentUserId)
-        .collection("goals")
-        .doc(id)
-        .delete()
-        .then(() => {
-          // console.log("Document deleted!");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    moment: function (date) {
+      return moment(date);
     },
+
+    // deleteGoal(id) {
+    //   const db = firebase.app().firestore();
+    //   db.collection("users")
+    //     .doc(this.currentUserId)
+    //     .collection("goals")
+    //     .doc(id)
+    //     .delete()
+    //     .then(() => {
+    //       // console.log("Document deleted!");
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    // },
   },
 };
 </script>

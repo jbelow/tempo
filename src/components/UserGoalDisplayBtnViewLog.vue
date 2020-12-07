@@ -1,31 +1,45 @@
 <template>
-  <v-dialog v-model="dialog" width="500">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on">
-        View Log
-      </v-btn>
-    </template>
-    <v-card>
-      <v-card-title class="headline indigo darken-1 white--text">
-        Logs for {{ this.goalTitle }}</v-card-title
-      >
-      <v-card-text>
-        <v-timeline align-top dense>
-          <v-timeline-item v-for="l in logs" :key="l.id" small color="indigo lighten-1">
+  <v-list-item link>
+    <v-dialog v-model="dialog" width="500">
+      <template v-slot:activator="{ on, attrs }">
+        <v-list-item-title color="red lighten-2" dark v-bind="attrs" v-on="on">
+          View Log
+        </v-list-item-title>
+      </template>
+      <v-card>
+        <v-card-title class="headline indigo darken-1 white--text">
+          Logs for {{ this.goalTitle }}</v-card-title
+        >
+        <v-card-text v-if="logs.length">
+          <v-timeline align-top dense>
+            <v-timeline-item
+              v-for="l in logs"
+              :key="l.id"
+              small
+              color="indigo lighten-1"
+            >
               <div class="font-weight-normal">
                 {{ moment(l.LoggedDate).format("MMM Do, YYYY h:ma") }} <br />{{
                   l.loggedMinutes
                 }}
                 minutes
               </div>
-          </v-timeline-item>
-        </v-timeline>
-        <v-btn color="indigo darken-1" text @click="dialog = false">
-          Close
-        </v-btn>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
+            </v-timeline-item>
+          </v-timeline>
+        </v-card-text>
+        <v-card-text v-else class="font-weight-bold text-center text-lg-h6">
+          There is nothing to see here yet becuase you haven't logged anything
+          yet!
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="indigo darken-1" text @click="dialog = false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-list-item>
 </template>
 
 <script>
@@ -63,7 +77,6 @@ export default {
               log.loggedMinutes = doc.data().goalLoggedMinutes;
               log.LoggedDate = doc.data().goalLoggedDate;
               this.logs.push(log);
-              //   console.log(log.LoggedDate);
             });
           });
       }

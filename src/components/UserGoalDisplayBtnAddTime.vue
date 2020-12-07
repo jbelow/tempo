@@ -36,6 +36,7 @@
 
 <script>
 import firebase from "firebase";
+import moment from "moment";
 
 export default {
   props: ["goalId", "currentMinutesProgress"],
@@ -98,6 +99,9 @@ export default {
           { merge: true }
         );
 
+      let goalLoggedDate = moment().valueOf()
+      console.log(goalLoggedDate);
+
       db.collection("users")
         .doc(this.currentUserId)
         .collection("goals")
@@ -105,7 +109,7 @@ export default {
         .collection("goalLog")
         .doc()
         .set({
-          goalLoggedDate: Date().toLocaleString(),
+          goalLoggedDate: goalLoggedDate,
           goalLoggedMinutes: this.goal.minutesProgress,
         });
 

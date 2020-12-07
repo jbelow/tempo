@@ -110,6 +110,7 @@
 
 <script>
 import firebase from "firebase";
+import moment from "moment";
 
 export default {
   data: () => ({
@@ -167,8 +168,7 @@ export default {
             break;
         }
 
-        let splitDate = this.goal.date.split("-");
-        let timeStamp = new Date(splitDate[0], splitDate[1], splitDate[2]);
+        let timeStamp = moment(this.goal.date).valueOf()
 
         const db = firebase.app().firestore();
         db.collection("users")
