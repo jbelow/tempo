@@ -32,6 +32,7 @@
 <script>
 import firebase from "firebase";
 import "firebase/auth";
+import moment from "moment";
 
 export default {
   data: () => ({
@@ -111,6 +112,8 @@ export default {
           )
           .then(() => console.log("USER DOCUMENT CREATED"))
           .catch((e) => console.log(e));
+        
+        let timeStamp = moment(this.goal.date).valueOf()
 
         //this will make an example goal for the user but just remember it doesn't make any logs
         db.collection("users")
@@ -119,12 +122,13 @@ export default {
           .doc()
           .set({
             goalDetails: "Information that you want to add on top of the goal",
-            goalDueDate: Date().toLocaleString(),
+            goalDueDate: timeStamp,
             goalExperienceReward: 150,
             goalMinutesProgress: 0,
             goalMinutes: 120,
             goalTitle: "Study for 2 hours!",
             goalDifficulty: "hard",
+            goalComplated: false,
             tagId: ["zLj4InU289szGUs2i6lZ", "stuffandthings"],
           });
 

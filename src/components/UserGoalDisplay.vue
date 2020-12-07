@@ -1,53 +1,57 @@
 <template>
   <div>
     <div class="goalStyle py-5 mx-lg-auto" v-for="g in goals" :key="g.id">
-      <v-card class="blue darken-2" outlined>
-        <v-card-title class="white--text">
-          <h3>
-            {{ g.title }} - Due on:
-            {{ moment(g.dueDate).format("MMM Do, YYYY") }}
-          </h3>
-          <v-spacer></v-spacer>
-          <!-- options/menu -->
 
-          <v-menu bottom left>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn dark icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <UserGoalDisplayBtnEdit v-bind:goalId="g.id"/>
-              <UserGoalDisplayBtnViewLog
-                v-bind:goalId="g.id"
-                v-bind:goalTitle="g.title"
-              />
-              <UserGoalDisplayBtnDelete
-                v-bind:goalId="g.id"
-                v-bind:goalTitle="g.title"
-              />
-            </v-list>
-          </v-menu>
-          <!--  options/menu end-->
+      <div v-if="(g.complated == false)">
+        <v-card class="blue darken-2">
+          <v-card-title class="white--text blue">
+            <h3>
+              {{ g.title }} :
+              {{ moment(g.dueDate).format("MMM Do, YYYY") }}
+            </h3>
+            <v-spacer></v-spacer>
+            <!-- options/menu -->
+            <v-menu bottom left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn dark icon v-bind="attrs" v-on="on">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <UserGoalDisplayBtnEdit v-bind:goalId="g.id" />
+                <UserGoalDisplayBtnViewLog
+                  v-bind:goalId="g.id"
+                  v-bind:goalTitle="g.title"
+                />
+                <UserGoalDisplayBtnDelete
+                  v-bind:goalId="g.id"
+                  v-bind:goalTitle="g.title"
+                />
+              </v-list>
+            </v-menu>
+            <!--  options/menu end-->
+          </v-card-title>
+
           <v-list-item>
             <v-list-item-content class="white--text">
               Progress: {{ g.minutesProgress }}/{{ g.minutes }} minutes
               <br />
               Difficulty: {{ g.difficulty }}
-              <br />
+              <br>
               Details: {{ g.details }}
             </v-list-item-content>
           </v-list-item>
-        </v-card-title>
 
-        <v-card-actions>
-          <UserGoalDisplayBtnAddTime
-            v-bind:goalId="g.id"
-            v-bind:currentMinutesProgress="g.minutesProgress"
-          />
-          <UserGoalDisplayBtnComplate />
-        </v-card-actions>
-      </v-card>
+          <v-card-actions>
+            <UserGoalDisplayBtnAddTime
+              v-bind:goalId="g.id"
+              v-bind:currentMinutesProgress="g.minutesProgress"
+            />
+            <UserGoalDisplayBtnComplate v-bind:goalId="g.id" v-bind:goalExperience="g.experience"/>
+          </v-card-actions>
+        </v-card>
+      </div>
+
     </div>
   </div>
 </template>
@@ -93,11 +97,12 @@ export default {
               goal.id = doc.id;
               goal.title = doc.data().goalTitle;
               goal.dueDate = doc.data().goalDueDate;
-
               goal.details = doc.data().goalDetails;
               goal.minutesProgress = doc.data().goalMinutesProgress;
               goal.minutes = doc.data().goalMinutes;
               goal.difficulty = doc.data().goalDifficulty;
+              goal.complated = doc.data().goalComplated;
+              goal.experience = doc.data().goalExperience;
               (goal.progress = goal.minutesProgress / goal.minutes),
                 this.goals.push(goal);
             });

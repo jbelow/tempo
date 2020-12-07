@@ -1,15 +1,15 @@
 <template>
-  <v-row justify="center">
+  <v-list-item link>
     <v-dialog v-model="dialog" scrollable max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn class="cyan darken-2" dark v-bind="attrs" v-on="on">
-          Create New Goal
-        </v-btn>
+        <v-list-item-title dark v-bind="attrs" v-on="on">
+          Edit Goal
+        </v-list-item-title>
       </template>
       <v-form ref="form" @submit.prevent="submit">
         <v-card>
           <v-card-title>
-            <span class="headline">New Goal</span>
+            <span class="headline">Edit Goal</span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -106,7 +106,7 @@
         </v-card>
       </v-form>
     </v-dialog>
-  </v-row>
+  </v-list-item>
 </template>
 
 <script>
@@ -188,6 +188,7 @@ export default {
               goalMinutes: this.goal.minutes,
               goalMinutesProgress: 0,
               goalDifficulty: this.goal.difficulty,
+              goalComplated: false,
             },
             { merge: true }
           );

@@ -1,8 +1,8 @@
 <template>
   <v-list-item link>
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog v-model="dialog" width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-list-item-title color="red lighten-2" dark v-bind="attrs" v-on="on">
+        <v-list-item-title dark v-bind="attrs" v-on="on">
           Delete
         </v-list-item-title>
       </template>
@@ -12,7 +12,7 @@
           you might want to just make the goal complate? <b>{{ goalTitle }}</b
           >?
         </v-card-text>
-        <v-divider></v-divider>
+        <v-divider/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="dialog = false">
@@ -52,7 +52,6 @@ export default {
 
   methods: {
     deleteGoal(id) {
-      console.log(id);
       const db = firebase.app().firestore();
       db.collection("users")
         .doc(this.currentUserId)
