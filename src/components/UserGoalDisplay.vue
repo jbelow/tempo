@@ -50,7 +50,7 @@
                 />
               </v-col>
               <v-col md="2">
-                <UserGoalDisplayBtnComplate
+                <UserGoalDisplayBtnComplete
                   v-bind:goalId="g.id"
                   v-bind:goalExperience="g.experience"
                 />
@@ -68,7 +68,7 @@ import firebase from "firebase";
 import moment from "moment";
 
 import UserGoalDisplayBtnAddTime from "../components/UserGoalDisplayBtnAddTime";
-import UserGoalDisplayBtnComplate from "../components/UserGoalDisplayBtnComplate";
+import UserGoalDisplayBtnComplete from "../components/UserGoalDisplayBtnComplete";
 import UserGoalDisplayBtnEdit from "../components/UserGoalDisplayBtnEdit";
 import UserGoalDisplayBtnViewLog from "../components/UserGoalDisplayBtnViewLog";
 import UserGoalDisplayBtnDelete from "../components/UserGoalDisplayBtnDelete";
@@ -76,7 +76,7 @@ import UserGoalDisplayBtnDelete from "../components/UserGoalDisplayBtnDelete";
 export default {
   components: {
     UserGoalDisplayBtnAddTime,
-    UserGoalDisplayBtnComplate,
+    UserGoalDisplayBtnComplete,
     UserGoalDisplayBtnEdit,
     UserGoalDisplayBtnViewLog,
     UserGoalDisplayBtnDelete,

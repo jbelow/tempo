@@ -3,12 +3,12 @@
     <v-dialog v-model="dialog" width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn class="cyan darken-1 white--text" dark v-bind="attrs" v-on="on">
-          Complate
+          Complete
         </v-btn>
       </template>
       <v-card>
         <v-card-text class="headline">
-          Are you sure you want to mark {{ goalTitle }} complated?
+          Are you sure you want to mark {{ goalTitle }} complete?
         </v-card-text>
         <v-divider />
         <v-card-actions>
@@ -19,9 +19,9 @@
           <v-btn
             color="primary"
             text
-            @click="complateGoal(goalId), (dialog = false)"
+            @click="completeGoal(goalId), (dialog = false)"
           >
-            Complate
+            Complete
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       dialog: false,
-      currentUserTotalGoalsComplated: null,
+      currentUserTotalGoalsCompleted: null,
       currentUserExperience: null,
       currentUserId: null,
     };
@@ -54,9 +54,9 @@ export default {
         .get()
         .then((doc) => {
           this.userRole = doc.data().role;
-          this.currentUserTotalGoalsComplated = doc.data().userTotalGoalsComplated;
+          this.currentUserTotalGoalsCompleted = doc.data().userTotalGoalsCompleted;
           this.currentUserExperience = doc.data().userExperience;
-          console.log(this.currentUserTotalGoalsComplated);
+          console.log(this.currentUserTotalGoalsCompleted);
         });
     });
   },
@@ -69,9 +69,9 @@ export default {
 
     },
 
-    complateGoal(id) {
+    completeGoal(id) {
       console.log("10 " + this.currentUserId)
-      let newUserTotalGoalsComplated = this.currentUserTotalGoalsComplated + 1
+      let newUserTotalGoalsCompleted = this.currentUserTotalGoalsCompleted + 1
       let newUserExperience = (this.currentUserExperience + this.experience);
 
       const db = firebase.app().firestore();
@@ -80,11 +80,11 @@ export default {
         .collection("goals")
         .doc(id)
         .set({
-          goalComplated: true,
+          goalCompleted: true,
         });
 
       db.collection("users").doc(this.currentUserId).set({
-        UserTotalGoalsComplated: newUserTotalGoalsComplated,
+        UserTotalGoalsCompleted: newUserTotalGoalsCompleted,
         userExperience: newUserExperience,
       },
       { merge: true }
