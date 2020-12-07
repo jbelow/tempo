@@ -17,11 +17,12 @@
               </v-btn>
             </template>
             <v-list>
-              <UserGoalDisplayBtnDelete
+              <UserGoalDisplayBtnEdit v-bind:goalId="g.id"/>
+              <UserGoalDisplayBtnViewLog
                 v-bind:goalId="g.id"
                 v-bind:goalTitle="g.title"
               />
-              <UserGoalDisplayBtnViewLog
+              <UserGoalDisplayBtnDelete
                 v-bind:goalId="g.id"
                 v-bind:goalTitle="g.title"
               />
@@ -57,6 +58,7 @@ import moment from "moment";
 
 import UserGoalDisplayBtnAddTime from "../components/UserGoalDisplayBtnAddTime";
 import UserGoalDisplayBtnComplate from "../components/UserGoalDisplayBtnComplate";
+import UserGoalDisplayBtnEdit from "../components/UserGoalDisplayBtnEdit";
 import UserGoalDisplayBtnViewLog from "../components/UserGoalDisplayBtnViewLog";
 import UserGoalDisplayBtnDelete from "../components/UserGoalDisplayBtnDelete";
 
@@ -64,6 +66,7 @@ export default {
   components: {
     UserGoalDisplayBtnAddTime,
     UserGoalDisplayBtnComplate,
+    UserGoalDisplayBtnEdit,
     UserGoalDisplayBtnViewLog,
     UserGoalDisplayBtnDelete,
   },
@@ -96,7 +99,6 @@ export default {
               goal.minutes = doc.data().goalMinutes;
               goal.difficulty = doc.data().goalDifficulty;
               (goal.progress = goal.minutesProgress / goal.minutes),
-                // console.log(goal);
                 this.goals.push(goal);
             });
           });
@@ -108,21 +110,6 @@ export default {
     moment: function (date) {
       return moment(date);
     },
-
-    // deleteGoal(id) {
-    //   const db = firebase.app().firestore();
-    //   db.collection("users")
-    //     .doc(this.currentUserId)
-    //     .collection("goals")
-    //     .doc(id)
-    //     .delete()
-    //     .then(() => {
-    //       // console.log("Document deleted!");
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    // },
   },
 };
 </script>

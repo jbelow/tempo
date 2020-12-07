@@ -100,7 +100,7 @@ export default {
         );
 
       let goalLoggedDate = moment().valueOf()
-      console.log(goalLoggedDate);
+      // console.log(goalLoggedDate);
 
       db.collection("users")
         .doc(this.currentUserId)

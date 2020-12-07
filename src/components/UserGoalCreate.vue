@@ -49,6 +49,7 @@
                     v-model="goal.difficulty"
                     :rules="difficultyRules"
                     :items="['Easy', 'Medium', 'Hard']"
+                    hint="The harder the difficulty is the more xp you will get"
                     label="Difficulty"
                   ></v-autocomplete>
                 </v-col>
