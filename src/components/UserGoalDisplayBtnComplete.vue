@@ -44,6 +44,7 @@ export default {
   },
 
   mounted() {
+
     firebase.auth().onAuthStateChanged((user) => {
       this.setId(user.uid);
 
@@ -53,10 +54,8 @@ export default {
         .doc(user.uid)
         .get()
         .then((doc) => {
-          this.userRole = doc.data().role;
           this.currentUserTotalGoalsCompleted = doc.data().userTotalGoalsCompleted;
           this.currentUserExperience = doc.data().userExperience;
-          console.log(this.currentUserTotalGoalsCompleted);
         });
     });
   },
@@ -65,14 +64,17 @@ export default {
     //the id is being really hard to work with so I made this to get it
     setId(userId) {
       this.currentUserId = userId;
-      console.log(this.currentUserId);
-
+      // console.log(this.currentUserId);
     },
 
     completeGoal(id) {
-      console.log("10 " + this.currentUserId)
-      let newUserTotalGoalsCompleted = this.currentUserTotalGoalsCompleted + 1
-      let newUserExperience = (this.currentUserExperience + this.experience);
+
+      // console.log("user xp: " + this.currentUserExperience);
+      let newUserTotalGoalsCompleted = this.currentUserTotalGoalsCompleted + 1;
+      let newUserExperience = this.currentUserExperience + this.goalExperience;
+
+      // console.log(newUserExperience);
+      // console.log(newUserTotalGoalsCompleted);
 
       const db = firebase.app().firestore();
       db.collection("users")
@@ -81,10 +83,12 @@ export default {
         .doc(id)
         .set({
           goalCompleted: true,
-        });
+        },
+        { merge: true }
+        );
 
       db.collection("users").doc(this.currentUserId).set({
-        UserTotalGoalsCompleted: newUserTotalGoalsCompleted,
+        userTotalGoalsCompleted: newUserTotalGoalsCompleted,
         userExperience: newUserExperience,
       },
       { merge: true }

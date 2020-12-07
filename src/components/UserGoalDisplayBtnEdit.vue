@@ -188,7 +188,7 @@ export default {
               goalMinutes: this.goal.minutes,
               goalMinutesProgress: 0,
               goalDifficulty: this.goal.difficulty,
-              goalComplated: false,
+              goalCompleted: false,
             },
             { merge: true }
           );

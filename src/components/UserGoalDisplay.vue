@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="goalStyle py-5 mx-lg-auto" v-for="g in goals" :key="g.id">
-      <div v-if="g.complated == false">
+      <div v-if="g.completed == false">
         <v-card class="blue darken-2">
           <v-card-title class="white--text blue">
             <h3>
@@ -108,10 +108,11 @@ export default {
               goal.minutesProgress = doc.data().goalMinutesProgress;
               goal.minutes = doc.data().goalMinutes;
               goal.difficulty = doc.data().goalDifficulty;
-              goal.complated = doc.data().goalComplated;
-              goal.experience = doc.data().goalExperience;
+              goal.completed = doc.data().goalCompleted;
+              goal.experience = doc.data().goalExperienceReward;
               (goal.progress = goal.minutesProgress / goal.minutes),
                 this.goals.push(goal);
+
             });
           });
       }

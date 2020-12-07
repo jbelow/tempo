@@ -11,7 +11,7 @@
         >
           <v-list-item-content>
             <v-list-item-title class="headline mb-1 text-md-center white--text">
-              Total Goals Complated: {{ userLevel }}
+              Total Goals Completed: {{ userTotalGoalsCompleted }}
             </v-list-item-title>
           </v-list-item-content>
         </v-card>
@@ -46,7 +46,7 @@ export default {
     userLevel: null,
     userExperience: null,
     userCompletedGoals: null,
-    userTotalGoalsComplated: null,
+    userTotalGoalsCompleted: null,
     userTotalMinutes: null,
   }),
 
@@ -70,7 +70,7 @@ export default {
           this.userRole = doc.data().role;
           this.userExperience = doc.data().userExperience;
           this.userLevel = doc.data().userLevel;
-          this.userTotalGoalsComplated = doc.data().userTotalGoalsComplated;
+          this.userTotalGoalsCompleted = doc.data().userTotalGoalsCompleted;
           this.userTotalMinutes = doc.data().userTotalMinutes;
         })
         .catch((error) => console.log(error));

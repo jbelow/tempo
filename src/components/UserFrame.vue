@@ -78,7 +78,7 @@ export default {
             this.userRole = doc.data().role;
             this.userExperience = doc.data().userExperience;
             this.userLevel = doc.data().userLevel;
-            this.userTotalGoalsComplated = doc.data().userTotalGoalsComplated;
+            this.userTotalGoalsCompleted = doc.data().userTotalGoalsCompleted;
             this.userTotalMinutes = doc.data().userTotalMinutes;
           } else {
             this.createUserDocument();
@@ -95,7 +95,7 @@ export default {
         this.userRole = "user";
         this.userExperience = 0;
         this.userLevel = 0;
-        this.userTotalGoalsComplated = 0;
+        this.userTotalGoalsCompleted = 0;
         this.userTotalMinutes = 0;
 
         db.collection("users")
@@ -105,7 +105,7 @@ export default {
               userExperience: this.userExperience,
               userLevel: this.userLevel,
               userRole: this.userRole,
-              userTotalGoalsComplated: this.userTotalGoalsComplated,
+              userTotalGoalsCompleted: this.userTotalGoalsCompleted,
               userTotalMinutes: this.userTotalMinutes,
             },
             { merge: true }
@@ -128,7 +128,7 @@ export default {
             goalMinutes: 120,
             goalTitle: "Study for 2 hours!",
             goalDifficulty: "hard",
-            goalComplated: false,
+            goalCompleted: false,
             tagId: ["zLj4InU289szGUs2i6lZ", "stuffandthings"],
           });
 
@@ -138,7 +138,6 @@ export default {
         //   .doc()
         //   .set({});
 
-        //TODO: make it so that when there is a new user they are welcomed to the site with a pop up! and not just a console.log...
       } else {
         console.log("cannot create user doc!");
       }
