@@ -1,9 +1,11 @@
 <template>
   <div>
     <v-app-bar app class="light-blue darken-1 white--text">
+      <v-app-bar-nav-icon class="white--text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
       <v-toolbar-title class="funFont">Tempo</v-toolbar-title>
       <v-spacer></v-spacer>
-      <button @click="logout">Log out</button>
+      <v-btn class="white--text" text @click="logout">Log out</v-btn>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -60,7 +62,7 @@ export default {
       } else {
         this.currentUser = null;
         this.userRole = null;
-        this.$router.push({ name: 'home'});
+        this.$router.push({ name: "home" });
       }
     });
   },
@@ -112,8 +114,8 @@ export default {
           )
           .then(() => console.log("USER DOCUMENT CREATED"))
           .catch((e) => console.log(e));
-        
-        let timeStamp = moment().valueOf()
+
+        let timeStamp = moment().valueOf();
 
         //this will make an example goal for the user but just remember it doesn't make any logs
         db.collection("users")
@@ -137,7 +139,6 @@ export default {
         //   .collection("achievments")
         //   .doc()
         //   .set({});
-
       } else {
         console.log("cannot create user doc!");
       }
@@ -165,8 +166,7 @@ export default {
 </script>
 
 <style>
-.funFont{
-  font-family: 'Fredoka One', 'Courier New', Courier, monospace;
-  
+.funFont {
+  font-family: "Fredoka One", "Courier New", Courier, monospace;
 }
 </style>
