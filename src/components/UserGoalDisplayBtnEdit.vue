@@ -100,7 +100,7 @@
               Close
             </v-btn>
             <v-btn color="blue darken-1" text @click="goalCreate()">
-              Create
+              Edit
             </v-btn>
           </v-card-actions>
         </v-card>
